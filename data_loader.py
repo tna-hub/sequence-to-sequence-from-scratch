@@ -86,6 +86,8 @@ def normalizeString(s):
 # want to translate from Other Language → English I added the ``reverse``
 # flag to reverse the pairs.
 
+
+# Code Providor of the dataset ######################################
 def readLangs(lang1, lang2, auto_encoder=False, reverse=False):
     print("Reading lines...")
 
