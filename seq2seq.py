@@ -501,6 +501,7 @@ def evaluate(encoder, decoder, bridge, input_tensor, max_length=args.MAX_LENGTH)
         decoder_input = torch.tensor([SOS_token], device=device)  # SOS
         encoder_hidden_last = [bridge(item) for item in encoder_hidden_last]
         decoder_hidden = encoder_hidden_last
+        # Identify and Loging some metrics testing functions ################################
         mlflow.log_metrics({"Decoder_input": decoder_input, "Encoder_hidden_last": encoder_hidden_last})
 
         decoded_words = []
@@ -537,6 +538,8 @@ def evaluateRandomly(encoder, decoder, bridge, n=10):
 
         input_sentence = ' '.join(SentenceFromTensor_(input_lang, input_tensor))
         output_sentence = ' '.join(SentenceFromTensor_(output_lang, output_tensor))
+        # Identify and Loging some metrics testing functions ################################
+        mlflow.log_metrics({"Input_sentence": input_sentence, "Output_sentence": output_sentence})
 
         print('Input: ', input_sentence)
         print('Output: ', output_sentence)
