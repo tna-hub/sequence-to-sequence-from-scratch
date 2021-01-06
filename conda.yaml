@@ -1,4 +1,4 @@
-name: train.py test.py
+name: seq2seq.py
 channels:
   - defaults
   - pytorch
@@ -8,18 +8,6 @@ dependencies:
   - python=3.6
   - pip
   - pip:
-    - Babel
-    - docopt
-    - et-xmlfile
-    - jdcal
-    - odfpy
-    - olefile
-    - openpyxl
-    - pytz
-    - records
-    - SQLAlchemy
-    - tablib
-    - unicodecsv
-    - xlrd
-    - xlwt
+    - torch
+    - scipy
     - mlflow
