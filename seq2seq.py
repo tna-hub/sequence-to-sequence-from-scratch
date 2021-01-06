@@ -5,7 +5,8 @@ import string
 import re
 import random
 import os
-
+####  1. Importing MLflow module ################################
+import mlflow
 import torch
 import torch.utils.data
 import torch.nn as nn
@@ -24,6 +25,8 @@ EOS_token = 2   # EOS_token: end of sentence
 def str2bool(v):
     return v.lower() in ("yes", "true")
 
+
+####  2. Analysis on all the parsing arguments to identify project entry points ################################
 # Parser
 parser = argparse.ArgumentParser(description='Creating Classifier')
 
@@ -46,7 +49,7 @@ parser.add_argument('--batch_size', default=32, type=int, help='Batch size for t
 parser.add_argument('--num_workers', default=8, type=int, help='Number of workers used in dataloading')
 parser.add_argument('--num_epoch', default=600, type=int, help='Number of training iterations')
 parser.add_argument('--cuda', default=True, type=str2bool, help='Use cuda to train model')
-parser.add_argument('--save_folder', default=os.path.expanduser('~/weights'), help='Location to save checkpoint models')
+parser.add_argument('--save_folder', default=os.path.expanduser('/trained_models'), help='Location to save checkpoint models')
 parser.add_argument('--epochs_per_save', default=10, type=int,
                     help='number of epochs for which the model will be saved')
 parser.add_argument('--batch_per_log', default=10, type=int, help='Print the log at what number of batches?')
@@ -498,6 +501,7 @@ def evaluate(encoder, decoder, bridge, input_tensor, max_length=args.MAX_LENGTH)
         decoder_input = torch.tensor([SOS_token], device=device)  # SOS
         encoder_hidden_last = [bridge(item) for item in encoder_hidden_last]
         decoder_hidden = encoder_hidden_last
+        mlflow.log_metrics({"Decoder_input": decoder_input, "Encoder_hidden_last": encoder_hidden_last})
 
         decoded_words = []
         # decoder_attentions = torch.zeros(max_length, max_length)
@@ -533,6 +537,7 @@ def evaluateRandomly(encoder, decoder, bridge, n=10):
 
         input_sentence = ' '.join(SentenceFromTensor_(input_lang, input_tensor))
         output_sentence = ' '.join(SentenceFromTensor_(output_lang, output_tensor))
+
         print('Input: ', input_sentence)
         print('Output: ', output_sentence)
         output_words = evaluate(encoder, decoder, bridge, input_tensor)
